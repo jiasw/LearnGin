@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"visiontest/infrastructure/logger"
-
 	"visiontest/infrastructure/configger"
+	"visiontest/infrastructure/logger"
 	"visiontest/routers"
 )
 

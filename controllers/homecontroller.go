@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"visiontest/dtos"
+
 	"github.com/gin-gonic/gin"
 )
 
 func Home(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Welcome to VisionTest API",
-	})
+	msg := "Hello World"
+	dtos.SuccessResponse(c, msg)
 }
