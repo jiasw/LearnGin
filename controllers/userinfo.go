@@ -3,39 +3,50 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"visiontest/models"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
-
-type UserInfo struct {
-	Name string `json:"name"`
-	Age  int    `json:"age"`
-}
 
 // UserInfoController is a controller for user info
 type UserInfoController struct {
+	Router *gin.Engine
+	Db     *gorm.DB
 }
 
 var Usercontroller UserInfoController
 
-var userlist []UserInfo = []UserInfo{
-	{Name: "John Doe", Age: 30},
-	{Name: "Jane Smith", Age: 25},
-}
-
 // GetUserInfo is a handler function for getting user info
 func (uic *UserInfoController) GetUserInfo(c *gin.Context) {
-	req, _ := c.Get("request")
-	fmt.Println("request:", req)
-
-	c.JSON(http.StatusOK, userlist)
+	firstuser := models.UserInfo{}
+	uic.Db.First(&firstuser)
+	fmt.Println("GetUserInfo", firstuser)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User info deleted successfully",
+		"data":    firstuser,
+	})
 }
 
 func (uic *UserInfoController) SaveUserInfo(c *gin.Context) {
-	// TODO: save user info to database
-	userlist = append(userlist, UserInfo{Name: "jiasw", Age: 20})
+
+	userinfo := models.UserInfo{
+		Name: "test",
+
+		Email: "test@test.com",
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User info saved successfully",
+		"data":    userinfo,
 	})
+
+}
+
+func (uic *UserInfoController) DeleteUserInfo(c *gin.Context) {
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User info deleted successfully",
+	})
+
 }
