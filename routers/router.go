@@ -15,7 +15,6 @@ func InitRouter(db *gorm.DB) *gin.Engine {
 		Router: router,
 	}
 	router.Use(middleware.MiddlewareFunc())
-
 	router.GET("/", controllers.Home)
 	router.GET("/userinfo", user.GetUserInfo)
 	router.POST("/userinfo", user.SaveUserInfo)
