@@ -2,31 +2,24 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"visiontest/infrastructure/configger"
+	"visiontest/infrastructure/databasehelper"
 	"visiontest/infrastructure/logger"
 	"visiontest/models"
 	"visiontest/routers"
-
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
 func main() {
-	file, _ := os.Create("gin.log")
-	defer file.Close()
-
-	dsn := "root:123456@tcp(localhost:3306)/hdk_db?charset=utf8mb4&parseTime=True&loc=Local"
 	// 连接到数据库
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := databasehelper.NewDatabaseHelper(configger.Conf.DBconfig)
 	if err != nil {
 		fmt.Println("无法连接到数据库: ", err)
 	}
-	db.AutoMigrate(&models.UserInfo{})
-
+	defer db.Close()
+	// 自动迁移表结构
+	db.DB.AutoMigrate(&models.UserInfo{})
 	logger.Info(configger.Conf.Appname + "Starting server...")
-	port := configger.Conf.Hostport
-	fmt.Println("Listen and serve on " + port)
+	fmt.Println("Listen and serve on " + configger.Conf.Hostport)
 	r := routers.InitRouter(db)
-	r.Run(port)
+	r.Run(configger.Conf.Hostport)
 }

@@ -7,4 +7,5 @@ type UserInfo struct {
 	Password string `json:"password"`
 	Age      int    `json:"age"`
 	Gender   string `json:"gender"`
+	Address  string `json:"address"`
 }

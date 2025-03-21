@@ -1,17 +1,21 @@
 package routers
 
 import (
-	"visiontest/controllers"
-	"visiontest/infrastructure/middleware"
-
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
+	"visiontest/controllers"
+	"visiontest/infrastructure/databasehelper"
+	"visiontest/infrastructure/middleware"
 )
 
-func InitRouter(db *gorm.DB) *gin.Engine {
+func InitRouter(helper *databasehelper.DatabaseHelper) *gin.Engine {
 	router := gin.Default()
+	router.Use(func(c *gin.Context) {
+		c.Set("DB", helper.DB)
+		c.Next()
+	})
+
 	user := controllers.UserInfoController{
-		Db:     db,
+
 		Router: router,
 	}
 	router.Use(middleware.MiddlewareFunc())

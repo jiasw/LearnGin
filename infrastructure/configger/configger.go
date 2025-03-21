@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Appname  string `json:"appname"`
 	Hostport string `json:"hostport"`
+	DBconfig string `json:"dbconfig"`
 }
 
 var Conf *Config
