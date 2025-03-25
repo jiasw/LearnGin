@@ -1,9 +1,10 @@
 package controllers
 
 import (
-	"gorm.io/gorm"
 	"net/http"
 	"visiontest/dtos"
+	"visiontest/infrastructure/databasehelper"
+	"visiontest/infrastructure/repositories"
 	"visiontest/models"
 
 	"github.com/gin-gonic/gin"
@@ -16,14 +17,14 @@ type UserInfoController struct {
 
 // GetUserInfo is a handler function for getting user info
 func (uic *UserInfoController) GetUserInfo(c *gin.Context) {
-
-	db := c.MustGet("DB").(*gorm.DB)
-	var users []models.UserInfo
-	if err := db.Find(&users).Error; err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-	dtos.SuccessResponse(c, users)
+	userRep := repositories.NewUserInfoRepository(databasehelper.GetInstance().DB)
+	users, total, _ := userRep.Paginate(1, 10)
+	dtos.SuccessResponse(c, gin.H{
+		"data":  users,
+		"total": total,
+		"page":  1,
+		"limit": 10,
+	})
 }
 
 func (uic *UserInfoController) SaveUserInfo(c *gin.Context) {
@@ -32,7 +33,7 @@ func (uic *UserInfoController) SaveUserInfo(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	db := c.MustGet("DB").(*gorm.DB)
+	db := databasehelper.GetInstance().DB
 	if err := db.Create(&userinfo).Error; err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

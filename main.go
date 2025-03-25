@@ -11,15 +11,16 @@ import (
 
 func main() {
 	// 连接到数据库
-	db, err := databasehelper.NewDatabaseHelper(configger.Conf.DBconfig)
+	err := databasehelper.Initialize(configger.Conf.DBconfig)
 	if err != nil {
-		fmt.Println("无法连接到数据库: ", err)
+		fmt.Println("连接数据库失败: ", err)
 	}
+	db := databasehelper.GetInstance()
 	defer db.Close()
 	// 自动迁移表结构
 	db.DB.AutoMigrate(&models.UserInfo{})
 	logger.Info(configger.Conf.Appname + "Starting server...")
 	fmt.Println("Listen and serve on " + configger.Conf.Hostport)
-	r := routers.InitRouter(db)
+	r := routers.InitRouter()
 	r.Run(configger.Conf.Hostport)
 }
