@@ -10,12 +10,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UserInfoController is a controller for user info
 type UserInfoController struct {
 	Router *gin.Engine
 }
 
-// GetUserInfo is a handler function for getting user info
+// @Summary 获取用户列表
+// @Description 获取所有用户信息
+// @Tags 用户信息
+// @Produce json
+// @Success 200 {object} dtos.ApiResponse
+// @Router /userinfo [get]
 func (uic *UserInfoController) GetUserInfo(c *gin.Context) {
 	userRep := repositories.NewUserInfoRepository(databasehelper.GetInstance().DB)
 	users, total, _ := userRep.Paginate(1, 10)

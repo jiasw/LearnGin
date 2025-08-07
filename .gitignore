@@ -1,3 +1,5 @@
 logs/
 go.mod
 go.sum
+docs/
+*.log

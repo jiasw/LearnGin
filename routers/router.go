@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"visiontest/controllers"
+
 	"visiontest/infrastructure/middleware"
 )
 

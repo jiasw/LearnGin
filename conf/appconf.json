@@ -1,5 +1,5 @@
 {
     "appname": "visiontest",
     "hostport": "127.0.0.1:8081",
-    "dbconfig":"root:123456@tcp(localhost:3306)/hdk_db?charset=utf8mb4&parseTime=True&loc=Local"
+    "dbconfig":"root:mysql_Garwwj@tcp(192.168.1.158:3306)/hdk_db?charset=utf8mb4&parseTime=True&loc=Local"
 }
