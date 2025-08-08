@@ -21,6 +21,7 @@ type UserInfoController struct {
 // @Produce json
 // @Param page query int true "页码"
 // @Param limit query int true "每页数量"
+// @Security BearerAuth
 // @Success 200 {object} dtos.ApiResponse
 // @Router /userlist [get]
 func (uic *UserInfoController) GetUserInfoList(c *gin.Context) {

@@ -7,10 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type AuditMiddleware struct {
-}
-
-func MiddlewareFunc() gin.HandlerFunc {
+func AuditMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()
 		fmt.Println("中间件开始执行了")

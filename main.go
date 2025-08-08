@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "visiontest/docs" // 重要：导入生成的文档
 	"visiontest/infrastructure/configger"
 	"visiontest/infrastructure/databasehelper"
 	"visiontest/infrastructure/logger"
 	"visiontest/models"
 	"visiontest/routers"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title 测试
@@ -21,6 +22,9 @@ import (
 // @license.name Apache 2.0
 // @license.url  http://www.apache.org/licenses/LICENSE-2.0.html
 // @BasePath /api/v1
+// @SecurityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	// 连接到数据库
 	err := databasehelper.Initialize(configger.Conf.DBconfig)

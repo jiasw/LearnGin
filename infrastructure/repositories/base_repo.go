@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"errors"
+
 	"gorm.io/gorm"
 )
 
@@ -45,6 +46,16 @@ func (r *BaseRepository[T]) Delete(id uint) error {
 // Where 条件查询
 func (r *BaseRepository[T]) Where(query interface{}, args ...interface{}) *BaseRepository[T] {
 	return &BaseRepository[T]{db: r.db.Where(query, args...)}
+}
+
+// First 查询第一条记录
+func (r *BaseRepository[T]) First() (*T, error) {
+	var entity T
+	err := r.db.First(&entity).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return &entity, err
 }
 
 // Paginate 分页
