@@ -15,5 +15,5 @@ import (
 // @Router / [get]
 func Home(c *gin.Context) {
 	msg := "Hello World"
-	dtos.SuccessResponse(c, msg)
+	dtos.SuccessResponseWithData(c, msg)
 }

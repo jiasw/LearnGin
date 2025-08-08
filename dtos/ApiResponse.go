@@ -13,7 +13,7 @@ type ApiResponse struct {
 }
 
 // 常用状态响应构造器
-func SuccessResponse(c *gin.Context, data interface{}) {
+func SuccessResponseWithData(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, ApiResponse{
 		Code:    http.StatusOK,
 		Message: "success",
@@ -21,9 +21,18 @@ func SuccessResponse(c *gin.Context, data interface{}) {
 	})
 }
 
-func ErrorResponse(c *gin.Context, statusCode int, message string) {
-	c.JSON(statusCode, ApiResponse{
-		Code:    statusCode,
+// 最基础的成果响应构造器
+func SuccessResponse(c *gin.Context) {
+	c.JSON(http.StatusOK, ApiResponse{
+		Code:    http.StatusOK,
+		Message: "success",
+		Data:    nil,
+	})
+}
+
+func ErrorResponse(c *gin.Context, message string) {
+	c.JSON(http.StatusOK, ApiResponse{
+		Code:    http.StatusInternalServerError,
 		Message: message,
 		Data:    nil,
 	})
