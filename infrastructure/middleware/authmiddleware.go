@@ -25,7 +25,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// 提取Token（格式: Bearer token）
 		tokenParts := strings.SplitN(authHeader, " ", 2)
-		if !(len(tokenParts) == 2 && tokenParts[0] == "Bearer") {
+		if !(len(tokenParts) == 2 && strings.EqualFold(tokenParts[0], "Bearer")) {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"code": 401,
 				"msg":  "token格式错误",

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"net/http"
 	"strconv"
 	"visiontest/dtos"
 	"visiontest/infrastructure/databasehelper"
@@ -19,21 +18,22 @@ type UserInfoController struct {
 // @Description 获取人员分页列表
 // @Tags 用户信息
 // @Produce json
-// @Param page query int true "页码"
-// @Param limit query int true "每页数量"
+// @Param page query int true "页码" default(1)
+// @Param limit query int true "每页数量" default(10)
 // @Security BearerAuth
 // @Success 200 {object} dtos.ApiResponse
 // @Router /userlist [get]
 func (uic *UserInfoController) GetUserInfoList(c *gin.Context) {
 	userRep := repositories.NewUserInfoRepository(databasehelper.GetInstance().DB)
 	pagestr, limitstr := c.Query("page"), c.Query("limit")
+	defaultPage, defaultLimit := 1, 10
 	page, err := strconv.Atoi(pagestr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		page = defaultPage
 	}
 	limit, err := strconv.Atoi(limitstr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		limit = defaultLimit
 	}
 
 	users, total, _ := userRep.Paginate(page, limit)
@@ -48,6 +48,7 @@ func (uic *UserInfoController) GetUserInfoList(c *gin.Context) {
 // @Tags 用户信息
 // @Produce json
 // @Param id query int true "用户ID"
+// @Security BearerAuth
 // @Success 200 {object} dtos.ApiResponse
 // @Router /userinfo [get]
 func (uic *UserInfoController) GetUserInfoByID(c *gin.Context) {
@@ -72,6 +73,7 @@ func (uic *UserInfoController) GetUserInfoByID(c *gin.Context) {
 // @Produce json
 // @Param user body models.UserInfo true "用户信息"
 // @Success 200 {object} dtos.ApiResponse
+// @Security BearerAuth
 // @Router /createUser [post]
 func (uic *UserInfoController) CreateUserInfo(c *gin.Context) {
 	userinfo := models.UserInfo{}
@@ -93,6 +95,7 @@ func (uic *UserInfoController) CreateUserInfo(c *gin.Context) {
 // @Produce json
 // @Param user body models.UserInfo true "用户信息"
 // @Success 200 {object} dtos.ApiResponse
+// @Security BearerAuth
 // @Router /updateUser [post]
 func (uic *UserInfoController) UpdateUserInfo(c *gin.Context) {
 	userinfo := models.UserInfo{}
@@ -114,6 +117,7 @@ func (uic *UserInfoController) UpdateUserInfo(c *gin.Context) {
 // @Produce json
 // @Param id formData int true "用户ID"
 // @Success 200 {object} dtos.ApiResponse
+// @Security BearerAuth
 // @Router /delUser [post]
 func (uic *UserInfoController) DeleteUserByID(c *gin.Context) {
 	idstr := c.PostForm("id")

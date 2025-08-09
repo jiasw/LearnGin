@@ -50,5 +50,4 @@ func Login(c *gin.Context) {
 	} else {
 		dtos.ErrorResponse(c, "登录失败")
 	}
-	dtos.SuccessResponse(c)
 }

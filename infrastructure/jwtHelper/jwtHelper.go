@@ -15,7 +15,7 @@ type Claims struct {
 	UserID   uint   `json:"user_id"`
 	Address  string `json:"address"`
 	Role     string `json:"role"` // 添加角色字段用于权限控制
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 func GenerateToken(userID uint, username string, address string, role string) (string, error) {
@@ -25,9 +25,9 @@ func GenerateToken(userID uint, username string, address string, role string) (s
 		UserID:   userID,
 		Address:  address,
 		Role:     role,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-			IssuedAt:  time.Now().Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			Issuer:    "LearnGin",
 		},
 	}

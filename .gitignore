@@ -6,3 +6,4 @@ docs/
 *.exe
 
 __debug_bin.exe3614802679
+logs/application.log
