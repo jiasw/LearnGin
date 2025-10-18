@@ -2,6 +2,8 @@ package routers
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
+	"time"
 	"visiontest/controllers"
 	"visiontest/infrastructure/middleware"
 
@@ -10,8 +12,21 @@ import (
 
 func InitRouter() *gin.Engine {
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"}, // 开发环境可以使用 *
+		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowHeaders: []string{
+			"Origin",
+			"Content-Type",
+			"Accept",
+			"Authorization",
+			"X-Requested-With",
+		},
+		AllowCredentials: false,
+		MaxAge:           12 * time.Hour,
+	}))
 	router.Use(func(c *gin.Context) {
-		fmt.Println("middleware")
+		fmt.Println("全局中间件")
 		c.Next()
 	})
 

@@ -6,10 +6,14 @@ import (
 )
 
 type ApiResponse struct {
-	Code    int         `json:"code"`           // 使用 HTTP 状态码而非自定义业务码
-	Message string      `json:"message"`        // 人类可读的提示信息
-	Data    interface{} `json:"data"`           // 实际业务数据
-	Meta    interface{} `json:"meta,omitempty"` // 分页等元数据
+	Code    int         `json:"code"`    // 使用 HTTP 状态码而非自定义业务码
+	Message string      `json:"message"` // 人类可读的提示信息
+	Data    interface{} `json:"data"`    // 实际业务数据
+	Meta    PageMeta    `json:"meta"`
+}
+
+type PageMeta struct {
+	Total int64 `json:"total"`
 }
 
 // 常用状态响应构造器
@@ -35,5 +39,16 @@ func ErrorResponse(c *gin.Context, message string) {
 		Code:    http.StatusInternalServerError,
 		Message: message,
 		Data:    nil,
+	})
+}
+
+func PageSuccessResponse(c *gin.Context, data interface{}, total int64) {
+	c.JSON(http.StatusOK, ApiResponse{
+		Code:    http.StatusOK,
+		Message: "success",
+		Data:    data,
+		Meta: PageMeta{
+			Total: total,
+		},
 	})
 }

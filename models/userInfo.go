@@ -6,6 +6,6 @@ type UserInfo struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Age      int    `json:"age"`
-	Gender   string `json:"gender"`
+	Gender   int    `json:"gender"`
 	Address  string `json:"address"`
 }

@@ -26,6 +26,7 @@ type UserInfoController struct {
 func (uic *UserInfoController) GetUserInfoList(c *gin.Context) {
 	userRep := repositories.NewUserInfoRepository(databasehelper.GetInstance().DB)
 	pagestr, limitstr := c.Query("page"), c.Query("limit")
+
 	defaultPage, defaultLimit := 1, 10
 	page, err := strconv.Atoi(pagestr)
 	if err != nil {
@@ -37,10 +38,7 @@ func (uic *UserInfoController) GetUserInfoList(c *gin.Context) {
 	}
 
 	users, total, _ := userRep.Paginate(page, limit)
-	dtos.SuccessResponseWithData(c, gin.H{
-		"userlist": users,
-		"total":    total,
-	})
+	dtos.PageSuccessResponse(c, users, total)
 }
 
 // @Summary 获取人员详情
